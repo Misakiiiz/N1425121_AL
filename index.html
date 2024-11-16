@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta Interativa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .carta {
+            width: 200px;
+            height: 150px;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/1250/1250663.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adiciona sombra ao texto */
+        }
+
+        .carta:hover {
+            transform: scale(1.1);
+        }
+
+        .carta-aberta {
+            display: none;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .imagem {
+            width: 300px;
+            height: auto;
+            border-radius: 8px;
+            display: none; /* Inicialmente, a imagem está escondida */
+        }
+
+        .botoes {
+            display: flex;
+            flex-direction: row; /* Coloca os botões lado a lado */
+            gap: 10px;
+            border: 2px solid #ccc; /* Cria o quadrado em torno dos botões */
+            border-radius: 8px;
+            padding: 10px;
+            background-color: white;
+            margin-top: 20px; /* Coloca os botões abaixo da imagem */
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+        }
+
+        #sim {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #nao {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* Estilo para o toast */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 20px;
+            font-size: 17px;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* A caixa de Participar inicialmente fica oculta */
+        #participarCaixa {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="carta" onclick="abrirCarta()">
+        </div>
+        
+        <div id="cartaAberta" class="carta-aberta">
+            <img id="imagem" src="https://media.discordapp.net/attachments/1073716308476182620/1307195536113270855/O_mundo_que_voce_conhecia_foi_transformado_em_um_tabuleiro_e_voces_sao_os_peoes_no_jogo_dos_novos_deuses._Eles_ditam_as_regras_brincam_com_vidas_e_riscam_destinos_como_quem_apaga_tracos_em_um_de.png?ex=67396c36&is=67381ab6&hm=8487b78bdd04ce2dd78df1baf609ad9d5539ef3656a533be6cb9294e4efdc194&=&format=webp&quality=lossless&width=249&height=352" alt="Imagem" class="imagem">
+            
+            <!-- Caixa de "Participar?" que será mostrada após a carta ser clicada -->
+            <div id="participarCaixa">
+                <p>Participar?</p>
+                <div class="botoes">
+                    <button id="sim" onclick="mostrarToast()">Sim</button>
+                    <button id="nao" onmouseover="fugir(event)">Não</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de confirmação -->
+    <div id="toast" class="toast">Número 1425121 Inscrito!</div>
+
+    <script>
+        function abrirCarta() {
+            // Esconde a carta fechada e exibe a carta aberta
+            document.querySelector('.carta').style.display = 'none';
+            document.getElementById('cartaAberta').style.display = 'flex';
+            
+            // Mostra a imagem com um pequeno delay para a transição
+            setTimeout(() => {
+                document.getElementById('imagem').style.display = 'block';
+                // Mostra a caixa de "Participar?" e os botões
+                document.getElementById('participarCaixa').style.display = 'block';
+            }, 300); // Espera 300ms antes de mostrar a imagem
+        }
+
+        function fugir(event) {
+            const botaoNao = document.getElementById('nao');
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            // A cada movimento do mouse, o botão "não" vai para uma posição aleatória
+            const distanciaX = Math.random() * 200 - 100; // Deslocamento aleatório em X
+            const distanciaY = Math.random() * 200 - 100; // Deslocamento aleatório em Y
+
+            botaoNao.style.transform = `translate(${distanciaX}px, ${distanciaY}px)`;
+        }
+
+        // Função para mostrar o toast
+        function mostrarToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show'); // Adiciona a classe "show" para exibir o toast
+
+            // Remove o toast após 3 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000); // O toast ficará visível por 3 segundos
+        }
+    </script>
+</body>
+</html>
